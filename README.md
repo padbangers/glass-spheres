@@ -42,7 +42,7 @@ Or install it with the [Plugin Manager](https://github.com/poloq-instruments/mpc
 **GLASS SPHERES tab**, laid out like the module: T on the left (RATE, BIAS, JITTER, T MODEL, T RANGE), DEJA VU and
 LENGTH in the middle, X on the right (SPREAD, BIAS, STEPS, X MODE, X RANGE), SCALE below LENGTH; t / X DEJA VU at the
 top corners (off, on, locked). **Y / CLOCK:** the Y section, clock source, MPC clock note value, X clock, MIDI trigger,
-gate length. **MODULATION:** as on [Overcast](https://github.com/FullPace/overcast). **OUTPUT:** CV or MIDI.
+gate length. **MODULATION:** as on [Overcast](https://github.com/padbangers/overcast). **OUTPUT:** CV or MIDI.
 
 **MIDI:** MPC OS has no MIDI output for plugins, so every instance opens its own MIDI port, **Glass Spheres 1**,
 **Glass Spheres 2**, ... On the track to be played (plug-in, keygroup, drum), pick it as the MIDI input with the
@@ -57,7 +57,7 @@ squeezed into 0-5 V. Don't use the same jacks on CV tracks: the MPC sets those t
 Needs Docker (with QEMU for 32-bit ARM containers), Python 3 and bash ≥ 4. The plugin framework is a submodule:
 
 ```sh
-git clone --recursive https://github.com/FullPace/glass-spheres
+git clone --recursive https://github.com/padbangers/glass-spheres
 cd glass-spheres
 ./build.sh            # -> build/glass_spheres.so + skin
 ./deploy.sh <host>    # copy to a device over ssh (--yes also registers it; restarts MPC)

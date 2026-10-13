@@ -9,7 +9,7 @@ Glass Spheres (renamed from "Marbles CV" on 2026-10-04; the repo was split from 
 is a native MPC OS plugin (VST2, built with the [mpc-vst-plugins](https://github.com/sd88me/mpc-vst-plugins)
 framework) that runs Mutable Instruments Marbles' random generators (MIT code, vendored) and sends its seven outputs
 (t1-t3, X1-X3, Y) to the MPC X's CV/Gate jacks or out of its own MIDI port. The plugin renders silence. The skin
-follows Overcast's (github.com/FullPace/overcast): same knobs, tags, background frame, focus marks and `post_build.py`
+follows Overcast's (github.com/padbangers/overcast): same knobs, tags, background frame, focus marks and `post_build.py`
 (keep the two in sync). The user designs the background (`assets/`, copied to `skin/glass_spheres_bg.jpg`).
 
 ## Folder layout
@@ -139,10 +139,13 @@ to be restarted instead (ask the user to save first).
 As Overcast's runbook (bench, `release.py`, `catalog_check.py`, device test with the zip's `install.sh -y` after the
 user saved, `tested.json`, push, `gh release create glass-spheres-vX.Y.Z`; `--prerelease` for betas = catalog
 channel beta). Catalog entry `catalog/plugins/glass-spheres.json` in sd88me/mpc-vst-plugins.
+**The repo moved to `padbangers/glass-spheres` on 2026-10-13** (GitHub organisation; old URLs redirect). The 1.0.0 zip
+records `FullPace/glass-spheres` as `source_repo`, so the catalog entry still says FullPace: build the next release with
+`--repo padbangers/glass-spheres` and change `repo` (and the screenshot URL) in the catalog entry in the same go.
 
 ## Next steps
 
-- Beta feedback; the CV path with a real VCO (1 V/oct accuracy, update-rate ceiling, see `cv/README.md`).
+- User feedback; the CV path with a real VCO (1 V/oct accuracy, update-rate ceiling, see `cv/README.md`).
 - Update `test/sim_test.cc` for MIDI and modulation, or drop it.
 
 ## Reverse-engineering tools

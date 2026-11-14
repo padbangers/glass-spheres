@@ -3,6 +3,18 @@
 Everything needed to build, test, deploy and continue Glass Spheres lives in this repo.
 Read this first, then `cv/README.md` (the CV protocol) and `README.md` (what the plugin is).
 
+## Akai MPC Plugin SDK build (1.1.0, 2026-11-14): the current route
+
+From 1.1.0 Glass Spheres is built with Akai's MPC Plugin SDK in `sdk/` (Windows, macOS or Linux, no Docker):
+`python sdk/build.py`, install with the SDK's `mpc_remote.py` (into `VST2 Plugins/`, no `MPC.settings` entry; the
+`deploy.sh` route to `/sdcard/Synths` is for MPC OS 3.9.x only). Details, test results and known host_sim reports in
+`sdk/README.md`. The engine runs behind `sdk/src/wrapper_adapter.h` (shared with Overcast and Drips), which keeps the
+old wrapper's parameter, popup and state behaviour (old projects load). CV and MIDI out work unchanged under MPC OS
+3.10.1 (tested on the MPC X). New on top of 1.0.0: modulation dots around the main tab's seven knobs
+(`sdk/src/views.h`, read-only params 150..156); MANUAL tab at 15 px with the Ko-fi line under the topic list. The skin
+is the rendered 1.0.0 skin, patched by the scripts in `sdk/tools/`. The Docker route below still builds the `.so`,
+without these skin patches.
+
 ## What this is
 
 Glass Spheres (renamed from "Marbles CV" on 2026-10-04; the repo was split from mpc-x-hacks `marbles/` the same day)

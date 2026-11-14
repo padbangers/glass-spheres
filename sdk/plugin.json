@@ -1,0 +1,17 @@
+{
+  "name": "Glass Spheres",
+  "manufacturer": "Padbangers",
+  "version": "1.1.0",
+  "format": "vst2",
+  "kind": "instrument",
+  "uid": "PbMb",
+  "category": "Instrument",
+  "numInputs": 0,
+  "numOutputs": 2,
+  "file32": "VST/glass-spheres-arm32.so",
+  "file64": "VST/glass-spheres-arm64.so",
+  "description": "Random gates and voltages from Emilie Gillet's open-source Marbles, sent to the MPC X's CV/Gate jacks or played as MIDI notes and CCs, with two envelopes, two LFOs, an 8-slot modulation matrix and a built-in manual.",
+  "author": "Padbangers",
+  "url": "https://github.com/padbangers/glass-spheres",
+  "license": "MIT"
+}

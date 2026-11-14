@@ -289,6 +289,10 @@ def output_page():
     return L
 
 
+MANUAL_SIZE = 1.5   # 15 px body text on the MANUAL tab (sdk/tools/manual_art.py draws the same for the SDK skin)
+SUPPORT = ["Support the project:", "Ko-Fi.com/padbangers"]
+
+
 def manual_page():
     L = ["[tab MANUAL]", BACKGROUND,
          'enum_v cx=150 cy=430 label="" key=manual_page sw=220 options="%s"' % ",".join(t for t, _ in MANUAL)]
@@ -297,8 +301,11 @@ def manual_page():
         L.append(text(320, 214, title, "c83d58", size=1.8, when=when, align="left"))
         for j, line in enumerate(lines):
             if line:
-                L.append(text(320, 254 + j * 35, line.replace('"', "'"), "1a1919", size=1.45, when=when, weight=600,
-                              align="left"))
+                L.append(text(320, 254 + j * 35, line.replace('"', "'"), "1a1919", size=MANUAL_SIZE, when=when,
+                              weight=600, align="left"))
+    # On every topic, under the topic list.
+    for j, line in enumerate(SUPPORT):
+        L.append(text(150, 600 + j * 24, line, "c83d58", size=MANUAL_SIZE))
     L.append('qlinks "MANUAL" = manual_page')
     return L
 

@@ -1,0 +1,19 @@
+{
+  "manual": {
+    "tab": 4,
+    "ink": "1a1919"
+  },
+  "views": {
+    "page": "GLASS SPHERES|GLASS SPHERES",
+    "knob_def": "^shKnob(38|50)_",
+    "knobs": [
+      "t_rate",
+      "t_bias",
+      "t_jitter",
+      "deja_vu",
+      "x_steps",
+      "x_spread",
+      "x_bias"
+    ]
+  }
+}

@@ -199,6 +199,11 @@ struct Instance {
   float last_volts[4];                  // X1-X3, Y at the end of the previous block (modulation sources)
   GateFlags x_clock[kSubBlock];
 
+  // What the modulation does, for the skin's rings (get_param("view_<key>"), sdk/src/views.h): per destination the
+  // knob value the generators got last block (0..1) and whether a matrix slot drives it.
+  volatile float view_value[mod::DST_LAST];
+  volatile bool view_active[mod::DST_LAST];
+
   // Gates seen during the current block, so pulses shorter than a block still reach the jack.
   bool gate_level[3];
   bool gate_rose[3];
@@ -416,9 +421,27 @@ void SetParam(void* inst, const char* key, const char* val) {
   }
 }
 
+// The knob behind each modulation destination (the skin's ring for view_<key>); the clocks have no knob.
+const struct { const char* key; int dest; } kViewKnobs[] = {
+  { "t_rate", mod::DST_T_RATE }, { "t_bias", mod::DST_T_BIAS }, { "t_jitter", mod::DST_JITTER },
+  { "deja_vu", mod::DST_DEJA_VU }, { "x_steps", mod::DST_STEPS }, { "x_spread", mod::DST_SPREAD },
+  { "x_bias", mod::DST_X_BIAS },
+};
+
 int GetParam(void* inst, const char* key, char* buf, int buf_len) {
   const Instance* s = static_cast<const Instance*>(inst);
   if (!strcmp(key, "state")) return SaveState(s, buf, buf_len);
+  if (!strncmp(key, "view_", 5)) {
+    // The skin's modulation display (sdk/src/views.h), read-only: a 65-frame ring, frame 0 = nothing modulates the
+    // knob, 1..64 = where the modulated value is.
+    for (const auto& k : kViewKnobs) {
+      if (strcmp(key + 5, k.key)) continue;
+      float v = s->view_active[k.dest]
+                    ? (1.0f + 63.0f * Clamp(static_cast<float>(s->view_value[k.dest]), 0.0f, 1.0f)) / 64.0f : 0.0f;
+      return snprintf(buf, buf_len, "%.4f", v);
+    }
+    return 0;
+  }
   size_t key_len = strlen(key);
   if (key_len > 8 && !strcmp(key + key_len - 8, "_display")) {
     // Readable values for the envelope times and LFO rates (dynamic_display in params.json).
@@ -560,6 +583,22 @@ void ConfigureGenerators(Instance* s, GroupSettings* x, GroupSettings* y, const 
   y->length = 1;
   y->ratio = kYDividers[Clamp(OptionIndex(s, P_Y_DIVIDER), 0, kNumYDividers - 1)];
   y->scale_index = x->scale_index;
+
+  // The skin's modulation display: where each modulated knob is now (amount 0 doesn't count, as in Overcast).
+  bool active[mod::DST_LAST] = {};
+  for (int k = 0; k < mod::kNumSlots; ++k) {
+    const float* v = &s->param[P_SLOT_FIRST + k * 3];
+    int src = static_cast<int>(v[0] + 0.5f), dst = static_cast<int>(v[1] + 0.5f);
+    if (src > mod::SRC_OFF && src < mod::SRC_LAST && dst > mod::DST_OFF && dst < mod::DST_LAST && fabsf(v[2]) > 0.5f)
+      active[dst] = true;
+  }
+  const float value[mod::DST_LAST] = { 0.0f, rate, Clamp(s->param[P_T_BIAS] + m.out(mod::DST_T_BIAS), 0.0f, 1.0f),
+                                       Clamp(s->param[P_T_JITTER] + m.out(mod::DST_JITTER), 0.0f, 1.0f),
+                                       deja_vu_knob, x->steps, x->spread, x->bias, 0.0f, 0.0f };
+  for (int d = 0; d < mod::DST_LAST; ++d) {
+    s->view_value[d] = value[d];
+    s->view_active[d] = active[d];
+  }
 }
 
 // Marbles' voltage -> 0..1 over the group's range (for the Y CC).

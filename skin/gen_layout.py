@@ -42,6 +42,7 @@ YC_KNOBS = [(GRID_X[0], [("y_spread", "Y SPREAD", "teal"), ("y_bias", "Y BIAS", 
 YC_LISTS = [(GRID_X[1], [("y_divider", "Y DIVIDER"), ("y_range", "Y RANGE"), ("x_clock", "X CLOCK")]),
             (GRID_X[2], [("clock", "CLOCK"), ("clock_div", "MPC CLOCK"), ("midi_trigger", "MIDI TRIGGER")])]
 YC_LIST_ROWS = [292, 422, 552]
+YC_Y_TAG = (271, 418)   # the Y tag's centre and width: from Y SPREAD's tag (x 62) to the lists' right edge (x 480)
 QLINKS_YC = ["y_spread", "y_bias", "y_steps", "y_divider",
              "y_range", "x_clock", "clock", "clock_div",
              "midi_trigger", "t_pw", "t_pw_random", "midi_note"]
@@ -202,7 +203,9 @@ def main_page():
 
 def yc_page():
     L = ["[tab Y / CLOCK]", BACKGROUND]
-    for x, title, colour in ((256, "Y", "teal"), (GRID_X[2], "CLOCK", "raspberry"), (GRID_X[3], "GATES", "raspberry")):
+    # Y spans the whole Y section (knob column and list column); sdk/tools/wide_tag.py draws the same in the SDK skin.
+    L += [tag(YC_Y_TAG[0], 208, "teal_wide", YC_Y_TAG[1]), text(YC_Y_TAG[0], 208, "Y", "ffffff")]
+    for x, title, colour in ((GRID_X[2], "CLOCK", "raspberry"), (GRID_X[3], "GATES", "raspberry")):
         L += [tag(x, 208, colour), text(x, 208, title, "ffffff")]
     for x, items in YC_KNOBS:
         for j, (key, label, colour) in enumerate(items):

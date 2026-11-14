@@ -21,6 +21,7 @@ inside the MPC process as before: the SDK doesn't sandbox plugins, it only drops
 | `skin.json` | What the skin scripts change: MANUAL tab and ink, main tab, knob components and knobs with a modulation view |
 | `tools/manual_art.py` | Redraws the MANUAL tab from `skin/gen_layout.py` (`MANUAL`, `MANUAL_SIZE` = 15 px body text, `SUPPORT` = "Support the project: / Ko-Fi.com/padbangers" under the topic list). Needs Pillow and Titillium Web SemiBold/Bold (OFL) |
 | `tools/mod_rings.py` | Modulation on the main tab: a dot around each modulated knob (65-frame strip under the knob, hidden while nothing modulates it). Shared with Overcast and Drips (toggle and locks are optional) |
+| `tools/wide_tag.py` | Widens the Y / CLOCK tab's "Y" tag over the whole Y section (knobs and lists) in `sh_bg_1.png`; `skin/gen_layout.py` draws the same (`YC_Y_TAG`) |
 | `build.py` | Runs the SDK's `tools/build.py` on this folder and adds the include path the engine needs (`CPLUS_INCLUDE_PATH`) |
 
 ## Build and test
@@ -33,7 +34,7 @@ python <sdk>/tools/mpc_remote.py <ip> update sdk --drive <n> --yes    # then res
 
 The SDK is found at `$MPC_SDK`, else `../mpc-plugin-builder-sdk` next to this repo. Output folder:
 `sdk/build/Padbangers - VST - Glass Spheres/`. Skin scripts, in this order after copying a new rendered skin:
-`manual_art.py <fonts>`, `mod_rings.py` (both can be run again).
+`manual_art.py <fonts>`, `mod_rings.py`, `wide_tag.py` (all can be run again).
 
 **host_sim on the MPC itself** (the real target; standalone, the MPC app is not touched): build the simulator for ARM
 with the SDK's zig and run it against the arm32 build:
